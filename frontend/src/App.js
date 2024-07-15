@@ -1,15 +1,18 @@
-import React, {useRef} from 'react';
-const App = () => {
- const inputRef = useRef(null);
- const clickButton = () => {
- inputRef.current.focus();
- };
- return (
- <>
- <input ref={inputRef} type="text" />
- <button onClick={clickButton}>click to Focus on
- input</button>
- </>
- );
- }
-export default App
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './Home';
+import Booking from './Booking';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/booking" element={<Booking />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
