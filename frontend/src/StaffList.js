@@ -4,10 +4,11 @@ import StaffBody from "./StaffBody";
 
 function StaffList(props){
     return (
-        <div>
+        <div className="staffProfile">
             <StaffHeader 
             firstName={props.staffObject.firstName}
-            surname={props.staffObject.surname}/>
+            surname={props.staffObject.surname}
+            img={props.staffObject.img}/>
             <StaffBody 
             biography={props.staffObject.biography}/>
         </div>
