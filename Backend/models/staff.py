@@ -1,4 +1,4 @@
-from Backend.app import db
+from app import db
 
 class Staff(db.Model):
     __tablename__ = 'staff'
@@ -6,3 +6,4 @@ class Staff(db.Model):
     firstName = db.Column(db.String(50))
     surname = db.Column(db.String(50))
     email = db.Column(db.String(100), unique=True)
+    is_active = db.Column(db.Boolean, default=False)
