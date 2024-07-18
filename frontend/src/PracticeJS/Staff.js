@@ -42,4 +42,3 @@ export const staff = [
       img: "staff_6.jpg"
     }
   ]
-  

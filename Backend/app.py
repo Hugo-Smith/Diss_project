@@ -1,10 +1,13 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
+from models.booking import Booking
+from models.customer import Customer
+from models.staff import Staff
 
-@app.route('/')
-def index():
-    return 'Hello world!'
 
-if __name__ == '__main__':
-    app.run()
+app = Flask(__name__, template_folder='templates')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydb.db'
+db = SQLAlchemy(app)
+

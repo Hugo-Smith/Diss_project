@@ -19,7 +19,7 @@ function Menu(){
         navigate('/shopLocation');
     };
     const navigateToCreateAccount = () => {
-        navigate('/createAccoutn');
+        navigate('/createAccount');
     };
 
     return(
