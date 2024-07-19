@@ -9,7 +9,6 @@ class Customer(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     DOB = db.Column(DateTime, nullable=False)
-    
     bookings = db.relationship('Booking', backref='customers', lazy=True)
     
     def __repr__(self):

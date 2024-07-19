@@ -1,0 +1,42 @@
+[
+    {
+        "staffID": 1,
+        "firstName": "John",
+        "surname": "Doe",
+        "email": "john.doe@example.com",
+        "password": "password",
+        "is_active": true
+    },
+    {
+        "staffID": 2,
+        "firstName": "Jane",
+        "surname": "Smith",
+        "email": "jane.smith@example.com",
+        "password": "password",
+        "is_active": false
+    },
+    {
+        "staffID": 3,
+        "firstName": "Alice",
+        "surname": "Johnson",
+        "email": "alice.johnson@example.com",
+        "password": "password",
+        "is_active": true
+    },
+    {
+        "staffID": 4,
+        "firstName": "Bob",
+        "surname": "Brown",
+        "email": "bob.brown@example.com",
+        "password": "password",
+        "is_active": false
+    },
+    {
+        "staffID": 5,
+        "firstName": "Charlie",
+        "surname": "Davis",
+        "email": "charlie.davis@example.com",
+        "password": "hashed_password_345",
+        "is_active": true
+    }
+]
