@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const images = require.context('./PracticeJS/StaffImages', false, /\.(png|jpe?g|svg)$/);
+const images = require.context('../PracticeJS/StaffImages', false, /\.(png|jpe?g|svg)$/);
 
 function StaffHeader(props) {
     console.log(props.img);

@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Home from './Home';
-import Booking from './Booking';
-import LogIn from './LogIn';
-import Menu from './Menu';
+import Home from './pages/Home';
+import Booking from './pages/Booking';
+import LogIn from './pages/LogIn';
+import Menu from './pages/Menu';
+import CustomerRegistration from './pages/SignUp';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/logIn' element={<LogIn />} />
         <Route path='/menu' element={<Menu />} />
+        <Route path='/createAccount' element={ <CustomerRegistration />} />
       </Routes>
     </Router>
   );

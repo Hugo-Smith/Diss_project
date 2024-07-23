@@ -1,11 +1,11 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom';
 
-import './App.css';
-import {staff} from './PracticeJS/Staff';
-import StaffList from './StaffList';
-import NavBar from './NavBar';
-import shopImage from './PracticeJS/barbershop.jpg'
+import '../App.css';
+import {staff} from '../PracticeJS/Staff';
+import StaffList from '../components/StaffList';
+import NavBar from '../components/NavBar';
+import shopImage from '../PracticeJS/barbershop.jpg'
 
 function Home(){
     const navigate = useNavigate();

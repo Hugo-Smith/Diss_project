@@ -2,8 +2,8 @@ from app import db
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
-    bookingID = db.Column(db.Integer, primary_key=True)
-    customerID = db.Column(db.Integer, db.ForeignKey('customers.customerID'), nullable=False)
+    booking_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.customer_id'), nullable=False)
     date = db.Column(db.Date)
-    treatment = db.Column(db.String(100))
+    treatment = db.Column(db.String(200))
     note = db.Column(db.Text)
