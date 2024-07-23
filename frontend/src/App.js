@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Booking from './pages/Booking';
 import LogIn from './pages/LogIn';
 import Menu from './pages/Menu';
-import CustomerRegistration from './pages/SignUp';
+import CustomerRegistration from './pages/CustomerRegistration';
 
 function App() {
   return (

@@ -1,13 +1,14 @@
 from flask import Flask, jsonify, request
-from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:admin123@localhost:5432/dissdb'
 db = SQLAlchemy(app)
+CORS(app)
 migrate = Migrate(app,db)
 bcrypt = Bcrypt(app) # for password hashing
 
@@ -29,31 +30,42 @@ def retrieve_staff():
                 'success' : True,
                 'staff' : [staff.format() for staff in all_staff]
             }) , 200
-        return jsonify(message='No staff record found'), 404
+        return jsonify(message='No staff records found'), 404
 
 
-@app.route('/api/v1/cutsomer-signup', methods=['Post'])
-def add_cutsomer():
+#retrieve all customers endpoint
+@app.route("/api/v1/customers", methods=['GET'])
+def retrieve_customers():
+    if request.method == 'GET':
+        all_customers = Customer.query.all()
+        if all_customers:
+            return jsonify({
+                'success' : True,
+                'customers' : [customer.format() for customer in all_customers]
+            }) , 200
+        return jsonify(message='No customer records found'), 404
+
+
+@app.route('/api/v1/customer-signup', methods=['POST'])
+def add_customer():
     if request.method == 'POST':
-        first_name = request.json().get('first_name')
-        surname = request.json().get('last_name')
-        email = request.json().get('email')
-        password = request.json().get('password')
-        birth_date = request.json().get('birth_date')
+        first_name = request.get_json().get('first_name')
+        surname = request.get_json().get('surname')
+        email = request.get_json().get('email')
+        password = request.get_json().get('password')
 
-        if first_name and surname and email and password and birth_date:
+        if first_name and surname and email and password :
             all_customers = Customer.query.filter_by(email=email).first()
             if all_customers:
                 return jsonify(message="Email address already exists."), 409
             else:
-                password_hash =bcrypt.generate_password_hash(password).decode('utf-8')
-                
+                password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
                 new_customer = Customer(
                     first_name = first_name,
                     surname = surname,
                     email = email,
                     password = password_hash,
-                    birth_date = birth_date
                 )
                 db.session.add(new_customer)
                 db.session.commit()
@@ -62,7 +74,7 @@ def add_cutsomer():
                     'new_customer' : new_customer.format()
                 }), 201
         else:
-            return jsonify({'error': 'Invalid inout'}), 400
+            return jsonify({'error': 'Invalid input'}), 400
                 
 
 if __name__ == '__main__':

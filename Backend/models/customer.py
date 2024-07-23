@@ -1,5 +1,4 @@
 from app import db
-from sqlalchemy import DateTime
 
 class Customer(db.Model):
     __tablename__ = 'customers'
@@ -8,7 +7,6 @@ class Customer(db.Model):
     surname = db.Column(db.String(50))
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
-    birth_date = db.Column(DateTime, nullable=False)
     bookings = db.relationship('Booking', backref='customers', lazy=True)
     
     def __repr__(self):
@@ -16,9 +14,8 @@ class Customer(db.Model):
     
     def format(self):
         return {
-            'customeer_id': self.customer_id,
+            'customer_id': self.customer_id,
             'first_name': self.first_name,
             'surname': self.surname,
             'email': self.email,
-            'birth_date': self.birth_date
         }
