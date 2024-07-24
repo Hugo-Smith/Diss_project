@@ -21,6 +21,9 @@ function Menu(){
     const navigateToCreateAccount = () => {
         navigate('/createAccount');
     };
+    const navigateToHome = () => {
+        navigate('/');
+    };
 
     return(
         <div>
@@ -32,6 +35,7 @@ function Menu(){
                 <li><button onClick={navigateToContact} className="menuButton">Contact Us</button></li>
                 <li><button onClick={navigateToShopLocation} className="menuButton">Shop Location</button></li>
                 <li><button onClick={navigateToCreateAccount} className="menuButton">Create Account</button></li>
+                <li><button onClick={navigateToHome} className="menuButton">Home</button></li>
             </ul>
         </div>
     ); //The create account button needs to be hidden  if userstate isn't logged in.

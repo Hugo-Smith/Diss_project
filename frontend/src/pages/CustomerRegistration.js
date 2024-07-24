@@ -17,7 +17,7 @@ const CustomerRegistration = () => {
     const [formErrors, setFormErrors] = useState({}); // Stores the form field for the validation errors
     const [isSubmitted, setIsSubmitted] = useState(false); // Tracks if form has been submitted
     const [response, setResponse] = useState({ success: false });
-    const [feedback, setFeedback] = useState(''); // might need to remove
+    const [feedback, setFeedback] = useState(''); 
     const [status, setStatus] = useState('');
 
     // Form validation function

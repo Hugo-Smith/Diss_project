@@ -1,37 +1,136 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
+import NavBar from '../components/NavBar';
+import { resolvePath } from 'react-router-dom';
 
-function LogIn() {
-  const password = "swordfish";
-  const [authorized, setAuthorized] = useState(false);
+const Login = () => {
 
-  function handleSubmit(e) {
-    const enteredPassword = e.target.querySelector(
-      'input[type="password"]'
-    ).value;
-    const auth = enteredPassword === password;
-    setAuthorized(auth);
+  //Initial form values
+  const initialValues = {
+    email: '',
+    password: '',
   }
 
-  const login = (
-    <form action="#" onSubmit={handleSubmit}>
-      <input type="password" placeholder="Password"></input>
-      <input type="submit"></input>
-    </form>
-  );
+  const [formValues, setFormValues] = useState(initialValues);
+  const [accessToken, setAccessToken] = useState('');
+  const [formErrors, setFormErrors] = useState({});
+  const [feedback, setFeedback] = useState('');
+  const [response, setResponse] = useState({success : false});
+  const [status, setStatus] = useState('');
 
-  const contactInfo = (
-    <ul>
-      <li>client@example.com</li>
-      <li>555.555.5555</li>
-    </ul>
-  );
 
-  return (
-    <div id="authorization">
-      <h1>{authorized === true ? "Contact" : "Enter the password"}</h1>
-      {authorized === true ? contactInfo : login}
-    </div>
-  );
+  const validate = (values) => {
+    const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+   
+    if(!values.email) {
+      errors.email = 'Email is required.';
+    } else if (!regex.test(values.email)) {
+      errors.email = 'This is not a valid email format.';
+    }
+
+    if (!values.password){
+      errors.password = 'Password is required.';
+    }
+
+    return errors;
+  }
+
+  const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+
+    if(isEmpty(formErrors)){
+
+      try {
+        const response = await axios.post('/api/v1/login', formValues);
+        setResponse(response.data)
+
+        if(response.data.success){
+          setFeedback('You have succesfully logged in!');
+          setAccessToken(response.data.access_token);
+          setStatus('success'); 
+        } else {
+          setFeedback('An error occurred: ' + response.data.error);
+          setStatus('error');
+        }
+
+      } catch(error) {
+        if (error.response && error.response.status === 401) {
+          console.log('401 received');
+          setFeedback(response.data.message);
+          setStatus('error');
+          } else {
+          console.log(error);
+          setFeedback('An unexpected error occurred. Please try again later.');
+          setStatus('error');
+          }
+      }
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value,});
+  }
+
+  return(
+    <>
+      <div className='section'>
+        <NavBar />
+        <div className='form-container'>
+          <h1>Customer Login</h1>
+          <form onSubmit={handleSubmit}>
+
+            <div className='input-containter'>
+              <label htmlFor='email'>Email</label>
+
+              <input
+                id='email'
+                type='email'
+                name='email'
+                value={formValues.email}
+                onChange={handleChange}
+                />
+
+                <p style={{color: 'red', fontWeight: 'bold'}}> 
+                  {formErrors.email}
+                </p>
+            </div>
+
+            <div className='input-container'>
+              <label htmlFor='password'>Password</label>
+
+              <input 
+              id='password'
+              type='password'
+              name='password'
+              value={formValues.password}
+              onChange={handleChange}
+              />
+
+              <p style={{color: 'red', fontWeight: 'bold'}}> 
+                  {formErrors.password}
+              </p>
+            </div>
+
+            <div className='button-section'>
+              <button type='submit'>Login</button>
+            </div>
+            
+            {feedback && (
+              <div className={`feedback ${status}`}>{feedback}</div>
+            )}
+
+          </form>
+        </div>
+      </div>  
+    </>
+  )
 }
-
-export default LogIn;
+export default Login;

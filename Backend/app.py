@@ -3,14 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:admin123@localhost:5432/dissdb'
+app.config['JWT_SECRET_KEY'] = 'seals_are_cool'
 db = SQLAlchemy(app)
 CORS(app)
 migrate = Migrate(app,db)
 bcrypt = Bcrypt(app) # for password hashing
+jwt = JWTManager(app)
 
 from models.booking import Booking
 from models.customer import Customer
@@ -76,6 +80,20 @@ def add_customer():
         else:
             return jsonify({'error': 'Invalid input'}), 400
                 
+
+@app.route('/api/v1/login', methods=['POST'])
+def login():
+    email = request.get_json().get('email', None)
+    password = request.get_json().get('password', None)
+    if email is None or password is None:
+        return jsonify({'message': 'Missing email or password'}), 400
+    
+    customer = Customer.query.filter_by(email=email).first()
+    if customer is None or not bcrypt.check_password_hash(customer.password, password):
+        return jsonify({'message': 'Invalid email or password'}), 401
+    
+    access_token = create_access_token(identity=customer.customer_id)
+    return jsonify({'access_token' : access_token}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
