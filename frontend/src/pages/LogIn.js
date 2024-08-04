@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import NavBar from '../components/NavBar';
-import { resolvePath } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
 
@@ -18,6 +19,11 @@ const Login = () => {
   const [response, setResponse] = useState({success : false});
   const [status, setStatus] = useState('');
 
+  const navigate = useNavigate()
+
+  const navigateToStaffLogin = () => {
+    navigate('/staff-login');
+  }
 
   const validate = (values) => {
     const errors = {};
@@ -44,7 +50,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
-
     if(isEmpty(formErrors)){
 
       try {
@@ -54,7 +59,9 @@ const Login = () => {
         if(response.data.success){
           setFeedback('You have succesfully logged in!');
           setAccessToken(response.data.access_token);
+          localStorage.setItem('accessToken', response.data.access_token);
           setStatus('success'); 
+          navigate('/home');
         } else {
           setFeedback('An error occurred: ' + response.data.error);
           setStatus('error');
@@ -63,7 +70,8 @@ const Login = () => {
       } catch(error) {
         if (error.response && error.response.status === 401) {
           console.log('401 received');
-          setFeedback(response.data.message);
+
+          setFeedback(error.response.data.message);
           setStatus('error');
           } else {
           console.log(error);
@@ -87,7 +95,7 @@ const Login = () => {
           <h1>Customer Login</h1>
           <form onSubmit={handleSubmit}>
 
-            <div className='input-containter'>
+            <div className='input-container'>
               <label htmlFor='email'>Email</label>
 
               <input
@@ -128,6 +136,9 @@ const Login = () => {
             )}
 
           </form>
+        </div>
+        <div>
+          <button onClick={navigateToStaffLogin}>Staff Login</button>
         </div>
       </div>  
     </>

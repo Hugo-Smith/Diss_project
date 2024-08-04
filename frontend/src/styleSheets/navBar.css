@@ -1,0 +1,25 @@
+.nav-bar {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box; 
+    border-bottom: 1px solid #f2f2f2;
+    background-color: #333;
+    color: white;
+  }
+  .nav-button {
+    padding: 10px;
+    margin: 10px; 
+    background-color: white; 
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .nav-cluster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }

@@ -11,10 +11,9 @@ class Staff(db.Model):
 
     def format(self):
         return {
-            'staf_id': self.staff_id,
+            'staff_id': self.staff_id,
             'first_name': self.first_name,
             'surname': self.surname,
             'email': self.email,
-            'passowrd':self.password,
             'is_active':self.is_active
         }

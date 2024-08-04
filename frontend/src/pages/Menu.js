@@ -1,10 +1,22 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from 'react-router-dom';
 import NavBar from "../components/NavBar";
+import checkUserAuth from "../checkUserAuth";
 
 
 function Menu(){
     const navigate = useNavigate();
+    
+    const[user, setUser] = useState(false);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            const response = await checkUserAuth()
+            setUser(response);
+        };
+
+        checkAuth();
+    }, []);
 
     const navigateToBooking = () => {
         navigate('/booking');
@@ -19,7 +31,7 @@ function Menu(){
         navigate('/shopLocation');
     };
     const navigateToCreateAccount = () => {
-        navigate('/createAccount');
+        navigate('/create-account');
     };
     const navigateToHome = () => {
         navigate('/');
@@ -34,7 +46,9 @@ function Menu(){
                 <li><button onClick={navigateToAvailability} className="menuButton">See Availabilty</button></li>
                 <li><button onClick={navigateToContact} className="menuButton">Contact Us</button></li>
                 <li><button onClick={navigateToShopLocation} className="menuButton">Shop Location</button></li>
-                <li><button onClick={navigateToCreateAccount} className="menuButton">Create Account</button></li>
+                {!user && (
+                    <li><button onClick={navigateToCreateAccount} className="menuButton">Create Account</button></li>
+                )}
                 <li><button onClick={navigateToHome} className="menuButton">Home</button></li>
             </ul>
         </div>

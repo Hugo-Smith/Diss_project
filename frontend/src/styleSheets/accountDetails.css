@@ -1,0 +1,93 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for the entire account details section */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Account details section */
+.accountDetails {
+    margin-bottom: 40px;
+}
+
+.accountDetails p {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+/* Table styles */
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+}
+
+.booking-table th, .booking-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 1em;
+}
+
+.booking-table th {
+    background-color: #3c3d3f;
+    color: white;
+    font-weight: bold;
+}
+
+.booking-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Error and loading styles */
+.error, .loading {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.2em;
+    color: #d9534f;
+}
+
+/* Heading styles */
+h1 {
+    color: #343a40;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #343a40;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    table th, table td {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+}
