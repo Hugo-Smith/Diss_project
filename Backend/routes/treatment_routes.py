@@ -2,8 +2,10 @@
 Treatment routes 
 * retrieve all treatments
 * retrieve available treatments
+* retrieve treatment by ID
 * add treatment
 * edit treatment
+* delete treatment
 """
 from app import app, db, staff_required
 from flask import request, jsonify
@@ -31,7 +33,25 @@ def retrieve_available_treaments():
                 'treatments' : [treatment.format() for treatment in available_treatments]
             }), 200
         return jsonify(message='No treatment records found.'), 404
+
+
+@app.route('/api/v1/treatment/<int:treatment_id>', methods=['GET'])
+def get_treatment(treatment_id):
+
+    treatment = Treatment.query.filter_by(treatment_id=treatment_id).first()
     
+    if treatment:
+        return jsonify({
+            'success': True,
+            'treatment': treatment.format()
+        }), 200
+    
+    return jsonify({
+        'success': False,
+        'message': 'No treatment found'
+    }), 404
+    
+
 @app.route('/api/v1/add-treatment', methods=['POST'])
 @staff_required()
 def add_treatment():
@@ -89,3 +109,19 @@ def update_treatment(treatment_id):
         'success': True,
         'treatment': treatment.format() 
     }), 200
+
+@app.route('/api/v1/delete-treatment/<int:treatment_id>', methods=['DELETE'])
+@staff_required()
+def delete_treatment(treatment_id):
+    treatment = Treatment.query.filter_by(treatment_id=treatment_id).first()
+
+    if treatment is None:
+        return jsonify({'success': False, 'message': 'Treatment not found'}), 404
+    
+    try:
+            db.session.delete(treatment)
+            db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'Error while deleting treatment'}), 500
+    return jsonify({'message': 'Treatment deleted successfully'}), 200

@@ -54,7 +54,7 @@ const CustomerRegistration = () => {
         return errors;
     };
 
-    // Form input handler
+    // Called when changes are made to the form inputs
     const onChangeHandler = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -64,7 +64,7 @@ const CustomerRegistration = () => {
         return Object.keys(obj).length === 0;
     };
 
-    // Form submit handler
+    // Called when form is submitted
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues));
@@ -103,7 +103,7 @@ const CustomerRegistration = () => {
 
     };
 
-    // Render the component
+    // Renders the component
     return (
         <>
             <div className="section">
@@ -196,7 +196,7 @@ const CustomerRegistration = () => {
                             </div>
 
                             <div className="btn-section">
-                                <button>Join Now</button>
+                                <button className='menu-button'>Join Now</button>
                             </div>
 
                             {feedback && (

@@ -1,25 +1,28 @@
-import { deleteBooking } from "../API/DeleteBookingAPI";
+import { deleteCustomer } from "../API/DeleteCustomerAPI.js";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ConfirmDeleteBooking = (props) => {
+const ConfirmDeleteCustomer = (props) => {
 
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const accessToken = localStorage.getItem('accessToken');
+    const navigate = useNavigate()
 
     const handleDelete = async () => {
         
         try{
             setIsLoading(true);
-            await deleteBooking(props.booking.booking_id, accessToken);
+            await deleteCustomer(props.user, props.access_token);
             setIsLoading(false);
-            window.location.reload();
+            localStorage.removeItem('accessToken');
+            navigate('/')
 
 
         } catch (err) {
             setIsLoading(false);
-            setError('Failed to delete booking');
+            setError('Failed to delete customer');
+            console.log(err.message)
         }
     };
 
@@ -33,17 +36,15 @@ const ConfirmDeleteBooking = (props) => {
     return (
         <div>
             {error && <p className="error">{error}</p>}
-            <h4>Are you sure you want to delete this booking 
-                with {props.booking.first_name} on {props.booking.date}?</h4>
-            
-            <button 
+            <p>Are you sure you want to delete your account?</p>
+            <button
                 className='menu-button'
                 onClick={handleDelete}
                 disabled={isLoading}>
-                    {isLoading ? 'Deleting booking...' : 'Delete Booking'}
+                    {isLoading ? 'Deleting account...' : 'Delete account'}
             </button>
         </div>
     );
 };
 
-export default ConfirmDeleteBooking;
+export default ConfirmDeleteCustomer;

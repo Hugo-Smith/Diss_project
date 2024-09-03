@@ -42,6 +42,7 @@ def add_staff():
     if request.method =='POST':
         
         staff_identity = get_jwt_identity()
+        print(staff_identity)
 
         staff_member = Staff.query.filter_by(email=staff_identity).first()
 
@@ -50,6 +51,7 @@ def add_staff():
                 'success': False, 
                 'message': 'Token cannot be verified'
                 }), 401
+        
         
        
         first_name = request.get_json().get('first_name')

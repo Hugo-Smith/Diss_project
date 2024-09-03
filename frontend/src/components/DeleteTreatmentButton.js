@@ -1,25 +1,25 @@
-import { deleteBooking } from "../API/DeleteBookingAPI";
+import { deleteTreatment } from "../API/DeleteTreatmentAPI";
 import { useEffect, useState } from "react";
 
-const ConfirmDeleteBooking = (props) => {
+const ConfirmDeleteTreatment = (props) => {
 
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('accessToken')
 
     const handleDelete = async () => {
         
         try{
             setIsLoading(true);
-            await deleteBooking(props.booking.booking_id, accessToken);
+            await deleteTreatment(props.treatment_id, accessToken);
             setIsLoading(false);
             window.location.reload();
 
 
         } catch (err) {
             setIsLoading(false);
-            setError('Failed to delete booking');
+            setError('Failed to delete treatment');
         }
     };
 
@@ -33,17 +33,16 @@ const ConfirmDeleteBooking = (props) => {
     return (
         <div>
             {error && <p className="error">{error}</p>}
-            <h4>Are you sure you want to delete this booking 
-                with {props.booking.first_name} on {props.booking.date}?</h4>
+            <h4>Are you sure you want to delete this treatment?</h4>
             
             <button 
                 className='menu-button'
                 onClick={handleDelete}
                 disabled={isLoading}>
-                    {isLoading ? 'Deleting booking...' : 'Delete Booking'}
+                    {isLoading ? 'Deleting treatment...' : 'Delete Treatment'}
             </button>
         </div>
     );
 };
 
-export default ConfirmDeleteBooking;
+export default ConfirmDeleteTreatment;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getTreatments } from '../API/AvailableTreatmentsAPI';
-import StaffHomeButton from './StaffHomeButton';
+
 
 function AvailableTreatments({ handleTreatmentInput }) {
     
@@ -39,7 +39,7 @@ function AvailableTreatments({ handleTreatmentInput }) {
     return (
         <div>
             <div className='treatment-list'>
-                <h1>Available Treatments</h1>
+                <h2>Available Treatments</h2>
                 <ul>
                     {treatments.map(treatment => (
                         <li 
@@ -54,13 +54,14 @@ function AvailableTreatments({ handleTreatmentInput }) {
                                 listStyleType: 'none'
                             }}
                         >
-                            <div>{treatment.title}</div>
-                            £{treatment.price}
+                            <h4>{treatment.title}</h4>
+                            {treatment.description}
+                            <h4>£{treatment.price}</h4>
                         </li>
                     ))}
                 </ul>
             </div>
-            <StaffHomeButton />
+            
         </div>
     );
 }

@@ -28,7 +28,7 @@ const DateTimeSelector = ({ handleDateInput }) => {
     } else {
       setFeedback('');
     }
-    const formattedDate = moment(dateObj).format('YYYY-MM-DD HH:MM');
+    const formattedDate = moment(dateObj).format('YYYY-MM-DD HH:mm');
 
     setSelectedDateTime(formattedDate);
     handleDateInput(formattedDate)
@@ -36,21 +36,25 @@ const DateTimeSelector = ({ handleDateInput }) => {
 
   return (
     <div className="dateTimePicker">
-      <DateTimePicker
-        value={selectedDateTime}
-        onChange={handleDateTimeChange}
-        isValidDate={(current) => current.isBetween(currentDate, latestDate, null, '[]')}
-        timeFormat="HH:mm"
-        dateFormat="YYYY-MM-DD"
-        inputProps={{ placeholder: 'Select a date and time' }}
-        closeOnSelect={false}
-      />
-      {feedback && <p className="feedback">{feedback}</p>}
-      {selectedDateTime && (
-        <div>
-          <p className="feedback">Selected Date and Time: {selectedDateTime.toString()}</p>
-        </div>
-      )}
+      
+      <div>
+        <DateTimePicker
+          value={selectedDateTime}
+          onChange={handleDateTimeChange}
+          isValidDate={(current) => current.isBetween(currentDate, latestDate, null, '[]')}
+          timeFormat="HH:mm"
+          dateFormat="YYYY-MM-DD"
+          inputProps={{ placeholder: 'Select a date and time' }}
+          closeOnSelect={false}
+        />
+      </div>
+
+      <div className="date-feedback">
+        {feedback && <p>{feedback}</p>}
+        {selectedDateTime && (
+            <p>Selected Date and Time: {selectedDateTime.toString()}</p>
+        )}
+      </div>
     </div>
   );
 };

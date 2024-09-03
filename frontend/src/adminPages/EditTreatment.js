@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getAllTreatments } from "../API/AllTreatmentsAPI";
 import StaffHomeButton from "../components/StaffHomeButton";
 import TreatmentEditor from "../components/TreatmentEditor";
+import ConfirmDeleteTreatment from "../components/DeleteTreatmentButton";
 
 
 const EditTreatments = () => {
@@ -69,6 +70,7 @@ const EditTreatments = () => {
             </div>
             <div>
                 {selectedTreatment? <TreatmentEditor treatment_id={selectedTreatment.treatment_id}/> : null}
+                {selectedTreatment? <ConfirmDeleteTreatment treatment_id={selectedTreatment.treatment_id}/>: null}
             </div>
             <StaffHomeButton />
         </div>

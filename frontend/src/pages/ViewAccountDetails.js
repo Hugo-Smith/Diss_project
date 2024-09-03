@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { getDetails } from '../API/CustomerDetailsAPI';
 import NavBar from '../components/NavBar';
 import '../styleSheets/accountDetails.css';
-import ConfirmDeleteBooking from '../components/deleteBookingButton';
+import ConfirmDeleteBooking from '../components/DeleteBookingButton';
+import ConfirmDeleteCustomer from '../components/DeleteCustomerButton';
+import checkUserAuth from '../checkUserAuth';
+import Popup from '../components/popup';
 
 
 function ViewAccountDetails() {
@@ -14,6 +17,7 @@ function ViewAccountDetails() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedBooking, setSelectedBooking] = useState(null);
+    const [user, setUser] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -28,7 +32,23 @@ function ViewAccountDetails() {
     };
 
     useEffect(() => {
-        fetchData();
+        const checkAuth = async () => {
+            try {
+                const response = await checkUserAuth();
+                if (response) {
+                    setUser(response);
+                    fetchData(); // Only fetches data if user is authenticated
+                } else {
+                    setIsLoading(false); 
+                }
+            } catch (error) {
+                setError(error.message);
+                setIsLoading(false);
+            }
+        };
+        
+        checkAuth();
+ 
     }, []);
 
     if (isLoading) {
@@ -46,6 +66,12 @@ function ViewAccountDetails() {
         console.log(newBookingSelection);
     }
 
+    if (!user){
+        return(
+            <Popup />
+        );
+    }
+
     return (
         <div>
             <NavBar />
@@ -60,6 +86,11 @@ function ViewAccountDetails() {
                 ) : (
                     <p>No customer details available.</p>
                 )}
+                <div className='account-details'>
+                    <h2>Delete Account</h2>
+                    {bookings && bookings.length > 0 ? 'Please remove all bookings to delete account.' : 
+                        <ConfirmDeleteCustomer user={user} access_token={accessToken} />}
+                </div>
             </div>
             <div className='container'>
                 <h2>Bookings</h2>
@@ -95,7 +126,7 @@ function ViewAccountDetails() {
                     <p>No bookings available.</p>
                 )}
             </div>
-            <div>
+            <div className='account-details'>
                 {selectedBooking? <ConfirmDeleteBooking booking={selectedBooking} />
                 : ''}
             </div>

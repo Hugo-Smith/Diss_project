@@ -10,10 +10,12 @@ Booking routes
 from app import app, db
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from datetime import datetime
 
 from models.booking import Booking
 from models.staff import Staff
 from models.treatment import Treatment
+from models.customer import Customer
 
 @app.route('/api/v1/bookings', methods=['GET'])
 def retrive_bookings():
@@ -26,20 +28,35 @@ def retrive_bookings():
             }), 200
         return jsonify(message='No bookings found'), 404
 
-@app.route('/api/v1/bookings/date', methods=['GET'])
-def get_bookings_by_date():
+@app.route('/api/v1/bookings/<string:date>', methods=['GET'])
+def get_bookings_by_date(date):
     if request.method == 'GET':
-        date = request.args.get('date')
+        
+        
         if date is None:
             return jsonify({'error': 'Date is required'}), 400
         
-        query = db.session.query(Booking.date, Staff.first_name, Staff.surname).\
+        target_date = datetime.strptime(date, '%Y-%m-%d')
+
+        query = db.session.query(
+            Booking.date,
+            Booking.note, 
+            Staff.first_name.label('s_first_name'),
+            Staff.surname, 
+            Treatment.title, 
+            Customer.first_name.label('c_first_name')
+            ).\
             join(Staff, Booking.staff_id == Staff.staff_id).\
-            filter_by(date = date)
+            join(Treatment, Booking.treatment_id == Treatment.treatment_id).\
+            join(Customer, Booking.customer_id == Customer.customer_id).\
+            filter(db.func.date(Booking.date) ==target_date)
         
         bookings = [{'date' : row.date,
-                     'first_name': row.first_name, 
-                     'surname': row.surname} for row in query]
+                     's_first_name': row.s_first_name, 
+                     'surname': row.surname,
+                     'treatment': row.title,
+                     'c_first_name': row.c_first_name,
+                     'note': row.note} for row in query]
         
         if bookings:
             return jsonify({
@@ -108,6 +125,11 @@ def add_booking():
 
         if treatment_id == None:
             note += ' (No treatment was selected)'
+
+        #Queries to ensure no matching bookings exist for that time and staff
+        existing_bookings = Booking.query.filter_by(staff_id=staff_id, date=date).all()
+        if len(existing_bookings) > 0:
+            return jsonify({'success': False, 'message': 'Booking already exists'}), 409
 
         if customer_id and staff_id and date:
 

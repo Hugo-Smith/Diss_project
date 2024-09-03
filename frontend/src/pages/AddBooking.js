@@ -110,6 +110,9 @@ function AddBooking() {
           if (error.response && error.response.status === 401){
             setFeedback(error.response.message);
             setStatus('error')
+          } else if (error.response && error.response.status === 409) {
+            setFeedback('A booking already exists with that staff at that time, please reselect');
+            setStatus('error');
           } else {
             console.log(error);
             setFeedback('an unexpected error occured. Please try again later.');
@@ -123,53 +126,59 @@ function AddBooking() {
         setFeedback('Please correct the errors in the form.')
       }
     };
-
-    const printValues = () => {
-        console.log(formValues);
-    };
-
     
     return (
-        <div className='container'>
-          <NavBar />
-          
-          <form onSubmit={handleSubmit}>
-              <div className='calendar'>
-                <DateTimeSelector handleDateInput={handleDateInput} />
-                <p style={{ color: 'red', fontWeight: 'bold' }}>
-                    {formErrors.date}
-                </p>
-              </div>
-              <div>
+      <div className='container'>
+        <NavBar />
+        <h1>Make a Booking!</h1>
+  
+        <form onSubmit={handleSubmit}>
+          <div className='main-content'>
+            <div className='calendar'>
+              <h2>Select a date and time</h2>
+              <DateTimeSelector handleDateInput={handleDateInput} />
+              <p style={{ color: 'red', fontWeight: 'bold' }}>
+                {formErrors.date}
+              </p>
+            </div>
+            
+            <div className='right-section'>
+              <div className='sub-container'>
                 <AvailableStaff handleStaffInput={handleStaffInput} />
                 <p style={{ color: 'red', fontWeight: 'bold' }}>
-                    {formErrors.staff_id}
+                  {formErrors.staff_id}
                 </p>
               </div>
-              <div>
+              <div className='sub-container'>
                 <AvailableTreatments handleTreatmentInput={handleTreatmentInput}/>
               </div>
-
-              <div className='note_input_field'>
-                  <input
-                      id="note"
-                      type="text"
-                      name="note"
-                      value={formValues.note}
-                      onChange={onChangeHandler}
-                  />
-              </div>
-              <div className="btn-section">
-                  <button>Confirm Booking</button>
-              </div>
-
-              {feedback && (
-                  <div className={`feedback ${status}`}>{feedback}</div>
-              )}
-            </form>
-            {showPopup && <Popup />}
-        </div>
-    );
+            </div>
+          </div>
+  
+          <div className='note-section'>
+            <h2>Additional Notes</h2>
+            <textarea
+              id="note"
+              name="note"
+              rows='5'
+              cols='30'
+              value={formValues.note}
+              onChange={onChangeHandler}
+            />
+          </div>
+  
+          <div className="btn-section">
+            <button className='menu-button'>Confirm Booking</button>
+          </div>
+  
+          {feedback && (
+            <div className={`feedback ${status}`}>{feedback}</div>
+          )}
+        </form>
+        
+        {showPopup && <Popup />}
+      </div>
+  );
 };
 
 

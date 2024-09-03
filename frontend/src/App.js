@@ -14,6 +14,7 @@ import StaffRegistration from './adminPages/StaffRegistration';
 import StaffHome from './adminPages/StaffHome';
 import CustomerSearch from './adminPages/CustomerSearch';
 import EditTreatments from './adminPages/EditTreatment';
+import BookingSearch from './adminPages/BookingSearch';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path='/staff-home' element={ <StaffHome />} />
         <Route path='/customer-search' element={ <CustomerSearch />} />
         <Route path='/edit-treatment' element={ <EditTreatments />} />
+        <Route path='/booking-search' element={ <BookingSearch />} />
       </Routes>
     </Router>
   );

@@ -34,14 +34,10 @@ function AvailableStaff ({ handleStaffInput }){
         //raises staff obj to parent
         handleStaffInput(newSelectedStaff);
     };
-
-    const printStaff = () => {
-        console.log(selectedStaff);
-    }
     
     return(
         <div className='staff_list'>
-                <h1>Staff</h1>
+                <h2>Staff</h2>
                 <ul>
                     {staffList.map(staff => (
                         <li
@@ -62,14 +58,8 @@ function AvailableStaff ({ handleStaffInput }){
                         </li>
                     ))}
                 </ul>
-                <button
-                    onClick={printStaff}>
-                        print staff
-
-                </button>
             </div>
     )
-
 }
 
 export default AvailableStaff;

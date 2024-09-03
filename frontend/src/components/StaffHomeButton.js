@@ -9,7 +9,10 @@ const StaffHomeButton = () => {
 
     return(
         <div>
-            <button onClick={navigateToHome}>Home</button>
+            <button 
+            onClick={navigateToHome}
+            className="menu-button"
+            >Home</button>
         </div>
     )
 };

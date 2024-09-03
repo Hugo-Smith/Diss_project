@@ -9,7 +9,17 @@ from functools import wraps
 
 app = Flask(__name__)
 
+#manual work around need to change
+app.config['TESTING'] = False
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:admin123@localhost:5432/dissdb'
+
+if app.config['TESTING']:
+    app.config['SQLALCHEMY_DATABASE_URI'] = (
+        'postgresql://admin:admin123@localhost:5432/testdb'        
+    )
+
+
 app.config['JWT_SECRET_KEY'] = 'seals_are_cool'
 
 db = SQLAlchemy(app)
@@ -24,25 +34,27 @@ from models.staff import Staff
 from models.treatment import Treatment
 
 
-
 @app.route("/")
 def index():
     return 'Welcome to Diss REST API Server'
 
 """
-Custome decorator to check staff authentication
+Custom decorator to check staff authentication
 """
 
 def staff_required():
-    def wrapper(fn):
-        @wraps(fn)
+
+    def wrapper(funct):
+        @wraps(funct)
+
         def decorator(*args, **kwargs):
             verify_jwt_in_request()
             claims = get_jwt()
             if claims.get('is_staff'):
-                return fn(*args, **kwargs)
+                return funct(*args, **kwargs)
             else:
                 return jsonify({'success': False, 'message': 'Staff access required'}), 403
+            
         return decorator
     return wrapper
 
@@ -95,18 +107,21 @@ def staffLogin():
     additional_claims = {'is_staff': True}
     
     access_token = create_access_token(identity=staff_member.email, additional_claims=additional_claims)
+    
     return jsonify({'success': True, 'access_token': access_token}), 200
 
 
 @app.route('/api/v1/verify-token', methods=['POST'])
 @jwt_required()
 def verifyTokenAuth():
+        
     current_user = get_jwt_identity()
 
     if current_user == None:
-        return jsonify({'success' : False, 'message' : 'Token cannot be verified'}), 401
+        return jsonify({'success': False, 'message': 'Token cannot be verified'}), 401
  
-    return jsonify({'user': current_user}), 200
+    return jsonify({'success':True, 'user': current_user}), 200
+
 
 @app.route('/api/v1/verify-staff-token', methods=['POST'])
 @jwt_required()

@@ -25,7 +25,12 @@ const StaffHome = () => {
     const navToEditTreatment = () => {
         navigate('/edit-treatment')
     };
-
+    const navToBookingSearch = () => {
+        navigate('/booking-search')
+    }
+    const navToStaffReg = () => {
+        navigate('/staff-signup')
+    }
 
     if (!user) {
         return <div>You are not authorised to view this page</div>
@@ -34,16 +39,11 @@ const StaffHome = () => {
     return(
         <div className="container">
             <h1>Admin Home</h1>
-            <div className="upper-container">
-                <button onClick={navToCustomerSearch}
-                    className="menu-button">Customer Search</button>
-
-                <button className="menu-button">Edit Availability</button>
-            </div>
 
             <div className="lower-container">
-                <button className="menu-button">Account Details</button>
-                <button className="menu-button">View Bookings</button>
+                <button className="menu-button" onClick={navToCustomerSearch}>Customer Search</button>
+                <button className="menu-button" onClick={navToStaffReg}>Staff Registration</button>
+                <button className="menu-button" onClick={navToBookingSearch}>View Bookings</button>
                 <button className="menu-button" onClick={navToAddTreatment}>Add Treatment</button>
                 <button className="menu-button" onClick={navToEditTreatment}>Edit Treatment</button>
             </div>

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:5000/api/v1/available-staff';
 
 const handleErrors = (error) => {
     if (error.response) {
@@ -20,14 +19,14 @@ const setHeaders = () => {
     axios.defaults.headers.common['Content-Type'] = 'application/json';
 };
 
-// Function to get staff
-export const getStaff = async () => {
+    // Function to get bookings
+export const getBookings = async (date) => {
     try {
         setHeaders();
-        const response = await axios.get(`${API_URL}`);
+
+        const response = await axios.get(`http://localhost:5000/api/v1/bookings/${date}`);
         return response.data;
     } catch (error) {
         handleErrors(error);
     }
 };
-

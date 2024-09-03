@@ -18,21 +18,23 @@ function Home(){
     return(
         <div>
             <NavBar />
-            <div>
-                <h1>Home Page</h1>
-            </div>
-            <div>
-                <img className='shopImage' src={shopImage} alt='shop'/>
-                <button className="homepage-booking-button" onClick={navigateToBooking}>Make a Booking!</button>
-            </div>
-            <div>
-                <h2 className="staffTitle">Meet our staff!</h2>
-                <ul className="staffGrid">
-                {staff.map((member, i) => (
-                <li key={i}><StaffList staffObject={member}/>
-                </li>
-                ))}
-                </ul>
+            <div className="container">
+                <div>
+                    <h1>Home Page</h1>
+                </div>
+                <div>
+                    <img className='shopImage' src={shopImage} alt='shop'/>
+                    <button className="homepage-booking-button" onClick={navigateToBooking}>Make a Booking!</button>
+                </div>
+                <div>
+                    <h2 className="staffTitle">Meet our staff!</h2>
+                    <ul className="staffGrid">
+                    {staff.map((member, i) => (
+                    <li key={i}><StaffList staffObject={member}/>
+                    </li>
+                    ))}
+                    </ul>
+                </div>
             </div>
            
         </div>

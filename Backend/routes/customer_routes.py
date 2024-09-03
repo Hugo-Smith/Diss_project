@@ -1,6 +1,7 @@
 """
 Customer routes
 * retrieve all customers
+* retrieve customer by id
 * customer signup/ add customer
 * retrieve customer details and bookings
 * customer search by names
@@ -18,7 +19,7 @@ from models.treatment import Treatment
 from models.booking import Booking
 
 #retrieve all customers endpoint
-@app.route("/api/v1/customers", methods=['GET'])
+@app.route('/api/v1/customers', methods=['GET'])
 def retrieve_customers():
     if request.method == 'GET':
         all_customers = Customer.query.all()
@@ -27,7 +28,22 @@ def retrieve_customers():
                 'success' : True,
                 'customers' : [customer.format() for customer in all_customers]
             }) , 200
-        return jsonify(message='No customer records found'), 404
+        return jsonify({'success': False,
+                        'message': 'No customer records found'}), 404
+
+
+@app.route('/api/v1/customer/<int:customer_id>', methods=['GET'])
+def get_customer(customer_id):
+
+    customer = Customer.query.filter_by(customer_id=customer_id).first()
+
+    if customer:
+        return jsonify({
+            'success': True,
+            'customer': customer.format()
+        }) , 200
+    return jsonify({'success': False,
+                    'message': 'No customer record found'}), 404
 
 
 @app.route('/api/v1/customer-signup', methods=['POST'])
@@ -132,7 +148,13 @@ def delete_customer(customer_id):
     customer = Customer.query.filter_by(customer_id=customer_id).first()
 
     if customer is None:
-        return jsonify({'success': False, 'message': 'Booking not found'}), 404
+        return jsonify({'success': False, 'message': 'Customer not found'}), 404
+    
+    bookings = Booking.query.filter_by(customer_id=customer_id).all()
+
+    if bookings:
+        return jsonify({'success': False, 
+                        'message': 'This customer still has bookings attached, please delete them'}), 418
     
     isStaff = Staff.query.filter_by(email=current_user_id)
 
@@ -142,7 +164,7 @@ def delete_customer(customer_id):
                 db.session.commit()
         except Exception:
             db.session.rollback()
-            return jsonify({'success': False, 'message': 'Error while deleting booking'}), 500
+            return jsonify({'success': False, 'message': 'Error while deleting customer'}), 500
         return jsonify({'message': 'Customer account deleted successfully'}), 200
     else:
         return jsonify({'success': False, 'message': 'Unauthorised'}), 403
@@ -156,7 +178,7 @@ def confirm_password():
         return jsonify({'success' : False, 'message' : 'Token cannot be verified'}), 401
     
     password =  request.get_json().get('password')
-    customer = Customer.query.filter_by(customer_id=current_user_id)
+    customer = Customer.query.filter_by(customer_id=current_user_id).first()
 
     if password is None:
         return jsonify({'success': False, 'message': 'Missing password'}), 400

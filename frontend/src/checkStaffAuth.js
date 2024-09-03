@@ -15,7 +15,10 @@ const checkStaffAuth = async () => {
             }
         });
 
-        return response.data.user;
+        return {
+            'user': response.data.user,
+            'token': accessToken
+        };
 
     } catch (error) {
         console.error('Token verification failed', error);

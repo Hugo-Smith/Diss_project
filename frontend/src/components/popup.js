@@ -16,10 +16,10 @@ const Popup = () => {
         <div>
             <div className="overlay"></div>
             <div className="popup">
-                <h3 style={{color: 'white'}}>You're not logged in, please log in to make a booking</h3>
-                <div>
-                    <button className='navButton' onClick={navigateToMenu}>Return to menu</button>
-                    <button className='navButton' onClick={navigateToLogIn}>Login</button>
+                <h3 style={{color: 'white'}}>You're not logged in, please log in to access this content</h3>
+                <div className='main-content'>
+                    <button className='nav-button' onClick={navigateToMenu}>Return to menu</button>
+                    <button className='nav-button' onClick={navigateToLogIn}>Login</button>
                 </div>
             </div>
         </div>

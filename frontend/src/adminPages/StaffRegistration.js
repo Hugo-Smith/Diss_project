@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import checkStaffAuth from '../checkStaffAuth';
+import StaffHomeButton from '../components/StaffHomeButton';
 
 const StaffRegistration = () => {
 
@@ -23,15 +24,19 @@ const StaffRegistration = () => {
     const [status, setStatus] = useState('');
     const [isChecked, setIsChecked] =useState(false);
     const [user, setUser] = useState(null);
+    const [token, setToken] = useState('')
 
+    
     useEffect(() => {
         const checkAuth = async () => {
             const response = await checkStaffAuth();
-            setUser(response);
+            setUser(response.user);
+            setToken(response.token);
         };
 
         checkAuth();
     }, []);
+    
 
     // Form validation function
     const validate = (values) => {
@@ -94,7 +99,11 @@ const StaffRegistration = () => {
 
             // Send form data to the server
             try {
-                const response = await axios.post('http://localhost:5000/api/v1/staff-signup', formValues);
+                const response = await axios.post('http://localhost:5000/api/v1/staff-signup', formValues, {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  });
                 setResponse(response.data);
 
                 if (response.data.success) {
@@ -123,11 +132,11 @@ const StaffRegistration = () => {
         }
 
     };
-
+    
     if (!user) {
         return <div>You are not authorised to view this page.</div>
     }
-
+    
     // Render the component
     return (
         <>
@@ -232,7 +241,7 @@ const StaffRegistration = () => {
                             </div>
 
                             <div className="btn-section">
-                                <button>Join Now</button>
+                                <button className='menu-button'>Join Now</button>
                             </div>
 
                             {feedback && (
@@ -241,7 +250,9 @@ const StaffRegistration = () => {
                         </form>
                     </div>
                 </div>
+                <StaffHomeButton />
             </div>
+            
         </>
     );
 };

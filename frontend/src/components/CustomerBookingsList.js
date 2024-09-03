@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCustomerBookingDetails } from "../API/CustomerBookingsAPI";
-import ConfirmDeleteBooking from "./deleteBookingButton";
+import ConfirmDeleteBooking from "./DeleteBookingButton";
 
 const CustomerBookingsList = (customer_id) =>{
 
